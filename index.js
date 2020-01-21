@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const category = require("./routes/category");
+const mobile = require("./routes/mobile");
 const express = require("express");
 var app = express();
 
@@ -17,6 +18,7 @@ mongoose
 
 app.use(express.json());
 //API Routing
+app.use("/api/mobile", mobile);
 app.use("/api/category", category);
 
 //port on that it will listen
