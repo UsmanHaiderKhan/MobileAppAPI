@@ -1,8 +1,10 @@
 const Joi = require("joi");
 const mongoose = require("mongoose");
+const { categorySchema } = require("./category");
 
 //Database Schema
 
+//Mobile Schema
 const Mobile = mongoose.model(
 	"Mobile",
 	new mongoose.Schema({
@@ -10,9 +12,14 @@ const Mobile = mongoose.model(
 			type: String,
 			required: true,
 			minlength: 4,
-			maxlength: 20
+			maxlength: 20,
+			trim: true
 		},
-		price: { type: Number, required: true, minlength: 2, maxlength: 4 },
+		category: {
+			type: categorySchema,
+			required: true
+		},
+		price: { type: Number, required: true, min: 0, max: 6 },
 		color: { type: String, required: true },
 		description: { type: String, minlength: 8, maxlength: 200 },
 		isAvailable: { type: Boolean }
@@ -25,16 +32,16 @@ function ValidateMobiles(mobiles) {
 		name: Joi.string()
 			.min(3)
 			.required(),
-		price: Joi.string()
-			.min(5)
-			.max(20)
+		price: Joi.number()
+			.min(0)
 			.required(),
 		color: Joi.string().required(),
+		categoryId: Joi.string().required(),
 		description: Joi.string()
 			.min(5)
 			.max(200)
 			.required(),
-		isAvailable: Joi.Boolean
+		isAvailable: Joi.boolean()
 	};
 	return Joi.validate(mobiles, Schema);
 }

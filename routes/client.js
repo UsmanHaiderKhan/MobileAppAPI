@@ -1,6 +1,5 @@
 const express = require("express");
 const { Client, validate } = require("../models/client");
-const app = express();
 
 const router = express.Router();
 
@@ -15,12 +14,20 @@ router.get("/", async (req, res) => {
 
 router.get("/:id", async (req, res) => {
 	const client = await Client.findById(req.params.id);
+	if (!client) {
+		return res.status(404).send("No Client At this Id");
+	}
 	res.send(client);
 });
 
 //HTTP-POST Request
 
 router.post("/", async (req, res) => {
+	const { error } = validate(req.body);
+	if (error) {
+		res.status(400).send(error.details[0].message);
+	}
+
 	let client = new Client({
 		name: req.body.name,
 		email: req.body.email,
@@ -34,12 +41,35 @@ router.post("/", async (req, res) => {
 //HTTP_PUT Request
 
 router.put("/:id", async (req, res) => {
-	const client = await Client.findById(req.params.id);
-	if (!client) {
-		return res.status(400).send("No Data on That Id...");
+	const { error } = validate(req.body);
+	if (error) {
+		res.status(400).send(error.details[0].message);
 	}
-	client = client.save();
+
+	const client = await Client.findByIdAndUpdate(
+		req.params.id,
+		{
+			name: req.body.name,
+			email: req.body.email,
+			phone: req.body.phone,
+			address: req.body.address
+		},
+		{ new: true }
+	);
+	if (!client) {
+		return res.status(404).send("No Data on That Id...");
+	}
 	res.send(client);
 });
 
 // HTTP-DELETE Request
+
+router.delete("/:id", async (req, res) => {
+	const client = await Client.findByIdAndRemove(req.params.id);
+	if (!client) {
+		return res.status(404).send("No Client Data Across that Id...!");
+	}
+	client.save();
+});
+
+module.exports = router;
