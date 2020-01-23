@@ -2,18 +2,15 @@ const Joi = require("joi");
 const mongoose = require("mongoose");
 
 // DATABASE Schema
-
-const Category = mongoose.model(
-	"Category",
-	new mongoose.Schema({
-		name: {
-			type: String,
-			required: true,
-			minlength: 3,
-			maxlength: 20
-		}
-	})
-);
+const categorySchema = new mongoose.Schema({
+	name: {
+		type: String,
+		required: true,
+		minlength: 3,
+		maxlength: 20
+	}
+});
+const Category = mongoose.model("Category", categorySchema);
 
 // Client Validation Function
 function ValidateCategory(category) {
@@ -27,3 +24,4 @@ function ValidateCategory(category) {
 
 exports.Category = Category;
 exports.validate = ValidateCategory;
+exports.categorySchema = categorySchema;
