@@ -1,3 +1,4 @@
+const Joi = require("joi");
 const mongoose = require("mongoose");
 
 var validateEmail = function(email) {
@@ -21,9 +22,9 @@ const Client = mongoose.model(
 			match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Please fill a valid email address"]
 		},
 		phone: {
-			type: Number,
+			type: String,
 			required: "Phone# is not Valid...!",
-			maxlength: 11
+			max: 13
 		},
 		address: {
 			type: String,
@@ -46,13 +47,11 @@ function ValidateClient(client) {
 			.email()
 			.max(256)
 			.required(),
-		phone: Joi.Number()
+		phone: Joi.string()
 			.trim()
-			.phone()
-			.max(11)
+			.regex(/^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$/)
 			.required(),
 		address: Joi.string()
-			.trim()
 			.min(10)
 			.max(200)
 			.required()
