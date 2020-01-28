@@ -1,13 +1,25 @@
+const config = require("config");
+const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 const mongoose = require("mongoose");
 const category = require("./routes/category");
 const mobile = require("./routes/mobile");
 const client = require("./routes/client");
 const order = require("./routes/order");
+const user = require("./routes/user");
+const auth = require("./routes/auth");
 const express = require("express");
 var app = express();
 app.use(express.json());
 
 // mongoose.Promise = global.Promise;
+
+//initialize the Environment Variable
+
+if (!config.get("jwtPrivateKey")) {
+	console.log("FATAL ERROR: jwtPrivateKey is not define...");
+	process.exit(1);
+}
 
 //Create Database Connection
 mongoose
@@ -21,6 +33,8 @@ mongoose
 
 //API Routing
 app.use("/api/client", client);
+app.use("/api/user", user);
+app.use("/api/auth", auth);
 app.use("/api/mobile", mobile);
 app.use("/api/order", order);
 app.use("/api/category", category);
