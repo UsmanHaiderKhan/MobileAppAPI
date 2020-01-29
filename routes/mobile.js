@@ -29,13 +29,13 @@ router.post("/", async (req, res) => {
 	const { error } = validate(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
-	const category = await Category.findById(req.params.categoryId);
+	const category = await Category.findById(req.body.categoryId);
 	if (!category) {
 		return res.status(400).send("Invalid Category...!");
 	}
 
 	//GET : // Get Data
-	let mobile = new Mobile({
+	const mobile = new Mobile({
 		name: req.body.name,
 		price: req.body.price,
 		color: req.body.color,
@@ -47,7 +47,7 @@ router.post("/", async (req, res) => {
 		isAvailable: req.body.isAvailable
 	});
 	// SAVE : Save into database
-	mobile = await mobile.save();
+	await mobile.save();
 	//SEND : Send Response to Client
 	res.send(mobile);
 });
