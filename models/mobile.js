@@ -19,7 +19,7 @@ const Mobile = mongoose.model(
 			type: categorySchema,
 			required: true
 		},
-		price: { type: Number, required: true, min: 0, max: 6 },
+		price: { type: Number, required: true, min: 0 },
 		color: { type: String, required: true },
 		description: { type: String, minlength: 8, maxlength: 200 },
 		isAvailable: { type: Boolean }
@@ -36,7 +36,7 @@ function ValidateMobiles(mobiles) {
 			.min(0)
 			.required(),
 		color: Joi.string().required(),
-		categoryId: Joi.string().required(),
+		categoryId: Joi.objectId().required(),
 		description: Joi.string()
 			.min(5)
 			.max(200)
