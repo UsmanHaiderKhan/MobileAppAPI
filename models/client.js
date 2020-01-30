@@ -15,12 +15,7 @@ const Client = mongoose.model(
 			minlength: 3,
 			maxlength: 50
 		},
-		email: {
-			type: String,
-			required: "Enter Your Email Address.",
-			validate: [validateEmail, "Please fill a valid email address"],
-			match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, "Please fill a valid email address"]
-		},
+
 		phone: {
 			type: String,
 			required: "Phone# is not Valid...!",
@@ -41,11 +36,6 @@ function ValidateClient(client) {
 			.trim()
 			.min(3)
 			.max(50)
-			.required(),
-		email: Joi.string()
-			.trim()
-			.email()
-			.max(256)
 			.required(),
 		phone: Joi.string()
 			.trim()
