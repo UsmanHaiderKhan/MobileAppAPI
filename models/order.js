@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi);
 
 const Order = mongoose.model(
 	"Order",
@@ -56,8 +57,9 @@ const Order = mongoose.model(
 
 function validateOrder(order) {
 	const schema = {
-		clientId: Joi.string().required(),
-		mobileId: Joi.string().required(),
+		clientId: Joi.objectId().required(),
+		mobileId: Joi.objectId().required(),
+		order_date: Joi.date(),
 		total_price: Joi.number()
 			.min(0)
 			.required()
