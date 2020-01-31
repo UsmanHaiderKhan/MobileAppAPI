@@ -30,7 +30,6 @@ router.post("/", async (req, res) => {
 
 	let client = new Client({
 		name: req.body.name,
-		email: req.body.email,
 		phone: req.body.phone,
 		address: req.body.address
 	});
@@ -50,7 +49,6 @@ router.put("/:id", async (req, res) => {
 		req.params.id,
 		{
 			name: req.body.name,
-			email: req.body.email,
 			phone: req.body.phone,
 			address: req.body.address
 		},
