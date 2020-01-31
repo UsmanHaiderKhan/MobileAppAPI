@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+const auth = require("../middleware/auth");
+const admin = require("../middleware/admin");
 const express = require("express");
 const { Category, validate } = require("../models/category");
 var router = express.Router();
@@ -21,7 +22,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //HTTP_POST Request
-router.post("/", async (req, res) => {
+router.post("/", auth, async (req, res) => {
 	const { error } = validate(req.body);
 	if (error) return res.status(400).send(error.details[0].message);
 
@@ -34,7 +35,7 @@ router.post("/", async (req, res) => {
 });
 
 // Http Put Request
-router.put("/:id", async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
 	// Validate the Incoming data
 	const { error } = validate(req.body);
 	if (error) {
@@ -67,7 +68,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //HTTp Delete Request
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [auth, admin], async (req, res) => {
 	//This code Working with Array
 	// var category = Category.find(c => c.id === parseInt(req.params.id));
 	// const index = categories.indexOf(category);
@@ -76,7 +77,7 @@ router.delete("/:id", async (req, res) => {
 	//This Code Work with database
 	const category = await Category.findByIdAndRemove(req.params.id);
 	if (!category) {
-		res.status(404).send("We Did Find ANy Thing Agnist That Id....");
+		res.status(404).send("We Did Find ANy Thing Across That Id....");
 	}
 
 	res.send(category);
