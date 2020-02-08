@@ -6,6 +6,7 @@ var router = express.Router();
 
 //HTTP_GET Request
 router.get("/", async (req, res) => {
+	// throw new Error("Could Not Get the Categories");
 	const categories = await Category.find().sort("name");
 	res.send(categories);
 });
