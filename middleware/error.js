@@ -1,5 +1,7 @@
-function error(err, res, req, next) {
-	res.status(500).send("SomeThing Failed.");
-}
+const winston = require("winston");
 
-module.exports.error = error;
+module.exports = function(err, req, res, next) {
+	winston.error(err.message, err);
+
+	res.status(500).send("SomeThing Wrong.");
+};
