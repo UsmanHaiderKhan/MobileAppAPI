@@ -1,20 +1,23 @@
+// const validObjectId = require("../middleware/validObjectId");
 const auth = require("../middleware/auth");
 const admin = require("../middleware/admin");
 const express = require("express");
+const mongoose = require("mongoose");
 const { Category, validate } = require("../models/category");
 var router = express.Router();
 
 //HTTP_GET Request
 router.get("/", async (req, res) => {
-	// throw new Error("Could Not Get the Categories");
 	const categories = await Category.find().sort("name");
 	res.send(categories);
 });
 
 // Get Data by Id
 router.get("/:id", async (req, res) => {
+	if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+		return res.status(404).send("Invalid ID.");
+	}
 	const category = await Category.findById(req.params.id);
-
 	// const category = categories.find(c => c.id === parseInt(req.params.id));
 	if (!category) {
 		return res.status(404).send("Here is no Category Across that Id...");
