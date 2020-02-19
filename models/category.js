@@ -17,6 +17,7 @@ function ValidateCategory(category) {
 	var Schema = {
 		name: Joi.string()
 			.min(3)
+			.max(50)
 			.required()
 	};
 	return Joi.validate(category, Schema);
